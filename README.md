@@ -4,6 +4,6 @@ There are folders for each chapter with source code.  Each folder includes the
 files that were updated during that chapter in their final form for that
 chapter.
 
-You'll be able to buy it on Amazon soon.
+You can buy it on Amazon: https://www.amazon.com/dp/B079WSYHHY.
 
 Read more about the book at Scott Hughes' website: http://www.webapppath.com.
