@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo App</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="app">
+    <h1>Todo App</h1>
+    <input type="text" v-model="newTodo">
+    <input type="radio" value="home" v-model="newType"><span>Home</span>
+    <input type="radio" value="work" v-model="newType"><span>Work</span>
+    <button
+      type="button"
+      v-on:click="addTodo"
+      v-bind:disabled="this.newTodo.length == 0">Add todo</button>
+    <p>
+      <span>View: </span>
+      <input type="radio" value="all" v-model="filter"><span>All</span>
+      <input type="radio" value="home" v-model="filter"><span>Home</span>
+      <input type="radio" value="work" v-model="filter"><span>Work</span>
+    </p>
+    <ul>
+      <li v-for="(todo, index) in filteredTodos">
+        <span v-text="todo.text"></span>
+        <button type="button" v-on:click="removeTodo(index)">X</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        newTodo: '',
+        newType: 'home',
+        filter: 'all',
+        todos: []
+      },
+      created: function () {
+        var storedTodos = JSON.parse(localStorage.getItem('todos'));
+        if (storedTodos != null) {
+          this.todos = storedTodos;
+        }
+      },
+      computed: {
+        filteredTodos: function () {
+          if (this.filter == 'all') {
+            return this.todos;
+          }
+
+          if (this.filter == 'home') {
+            return this.todos.filter(
+              function (todo) {
+                return todo.type == 'home';
+              }
+            );
+          }
+
+          if (this.filter == 'work') {
+            return this.todos.filter(
+              function (todo) {
+                return todo.type == 'work';
+              }
+            );
+          }
+        }
+      },
+      methods: {
+        addTodo: function () {
+          this.todos.push( { text: this.newTodo, type: this.newType } );
+          this.newTodo = '';
+          this.storeTodos();
+        },
+        removeTodo: function (index) {
+          this.todos.splice(index, 1);
+          this.storeTodos();
+        },
+        storeTodos: function () {
+          localStorage.setItem('todos', JSON.stringify(this.todos));
+        }
+      }
+    })
+  </script>
+</body>
+</html>
